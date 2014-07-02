@@ -1,8 +1,8 @@
 package gojvm
 
 //#cgo CFLAGS:-Iinclude
-//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/java-6-sun/jre/lib/amd64/server/
-//#include</usr/lib/jvm/java-6-sun-1.6.0.26/include/jni.h>
+//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server
+//#include</usr/lib/jvm/default-java/include/jni.h>
 //#include <stdlib.h>
 //#include <unistd.h>
 //#include "helpers.h"

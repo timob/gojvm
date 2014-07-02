@@ -1,12 +1,15 @@
-#include</usr/lib/jvm/java-6-sun-1.6.0.26/include/jni.h>
+#include</usr/lib/jvm/default-java/include/jni.h>
 #include<string.h>
 #include<stdlib.h>
 #include<libio.h>
 #include<unistd.h>
+#include<stdint.h>
 
 
 #ifndef HELPERS_H
 #define HELPERS_H
+
+typedef uintptr_t uintptr;
 
 // VarArgs for variadic
 typedef struct {

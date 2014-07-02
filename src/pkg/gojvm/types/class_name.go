@@ -16,7 +16,7 @@ var JavaLangThrowable	=	Name{"java","lang","Throwable"}
 	returns a new Name instance
 */
 func NewName(s string) Name {
-	return Name(strings.FieldsFunc(s, func(ch int) bool {
+	return Name(strings.FieldsFunc(s, func(ch rune) bool {
 		return (ch == '.' || ch == '/')
 	}))
 }

@@ -1,7 +1,7 @@
 package gojvm
 
 //#cgo CFLAGS:-I../include/
-//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/java-6-sun/jre/lib/amd64/server/
+//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server
 //#include "helpers.h"
 import "C"
 import (
@@ -150,12 +150,12 @@ func (self *Environment) NewStringObject(s string) (obj *Object, err error) {
 }
 
 func (self *Environment) setObjectArrayElement(arr *Object, pos int, item *Object) (err error) {
-	C.envSetObjectArrayElement(self.env, arr.object, C.jint(pos), item.object)
+	C.envSetObjectArrayElement(self.env, arr.object, C.jsize(pos), item.object)
 	return
 }
 
 func (self *Environment) newObjectArray(sz int, klass *Class, init C.jobject) (o *Object, err error) {
-	ja := C.envNewObjectArray(self.env, C.jint(sz), klass.class, init)
+	ja := C.envNewObjectArray(self.env, C.jsize(sz), klass.class, init)
 	if ja == nil {
 		err = self.ExceptionOccurred()
 	}
@@ -166,7 +166,7 @@ func (self *Environment) newObjectArray(sz int, klass *Class, init C.jobject) (o
 }
 
 func (self *Environment) newByteObject(bts []byte) (o *Object, err error) {
-	ja := C.envNewByteArray(self.env, C.jint(len(bts)))
+	ja := C.envNewByteArray(self.env, C.jsize(len(bts)))
 	if ja == nil {
 		err = errors.New("Error allocating byte array")
 	}
@@ -174,7 +174,7 @@ func (self *Environment) newByteObject(bts []byte) (o *Object, err error) {
 		bptr := make([]byte, len(bts))
 		copy(bptr, bts)
 		//log.Printf("bptr: %s %p %p", bptr,bptr, &bptr[0] )
-		C.envSetByteArrayRegion(self.env, ja, 0, C.jint(len(bptr)), unsafe.Pointer(&bptr[0]))
+		C.envSetByteArrayRegion(self.env, ja, 0, C.jsize(len(bptr)), unsafe.Pointer(&bptr[0]))
 	}
 	if err == nil {
 		o = newObject(C.jobject(ja))
