@@ -1,7 +1,7 @@
 package gojvm
 
 //#cgo CFLAGS:-I../include/
-//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server
+//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server -Xlinker "-rpath=/usr/lib/jvm/default-java/jre/lib/amd64/server"
 //#include "helpers.h"
 import "C"
 import (
