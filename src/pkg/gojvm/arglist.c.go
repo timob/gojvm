@@ -71,6 +71,8 @@ func newArgList(ctx *Environment, params ...interface{}) (alp argList, objStack 
 			alp = append(alp, C.objValue(v))
 		case *Object:
 			alp = append(alp, C.objValue(v.object))
+		case *CastObject:
+			alp = append(alp, C.objValue(v.Object.object))
 		case *Class:
 			alp = append(alp, C.objValue(v.class))
 		case C.jvalue:

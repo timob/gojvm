@@ -6,7 +6,7 @@ package gojvm
 import "C"
 import (
 	"gojvm/types"
-	"log"
+//	"log"
 )
 
 type Object struct {
@@ -27,13 +27,25 @@ func (self *Object) ObjectClass(env *Environment) (c *Class, err error) {
 	return env.GetObjectClass(self)
 }
 
+var ClassClass = types.Name{"java", "lang", "Class"}
 /*
 	Returns the (potentially cached) name of the ObjectClass of the
 	named object.
 */
 func (self *Object) Name(env *Environment) (name types.Name, err error) {
+	clsObj, err := self.CallObj(env, false, "getClass", types.Class{ClassClass})
+	if err != nil {
+		return
+	}
+	
+	nameStr, _, err := clsObj.CallString(env, false, "getName")
+	if err != nil {
+		return
+	}
+	return types.NewName(nameStr), nil
+/*		
 	var c *Class
-	c, err = self.ObjectClass(env)
+	c, err = clsObj.ObjectClass(env)
 	if err == nil {
 		defer env.DeleteLocalClassRef(c)
 		name, err = c.GetName(env)
@@ -41,6 +53,7 @@ func (self *Object) Name(env *Environment) (name types.Name, err error) {
 		log.Printf("Couldn't get object class!")
 	}
 	return
+*/	
 }
 
 func (self *Object) CallVoid(env *Environment, static bool, mname string, params ...interface{}) (err error) {
@@ -84,3 +97,13 @@ func (self *Object) CallObj(env *Environment, static bool, mname string, rval ty
 func (self *Object) CallString(env *Environment, static bool, mname string, params ...interface{}) (str string, wasNull bool, err error) {
 	return env.CallObjectString(self, static, mname, params...)
 }
+
+type CastObject struct {
+	*Object
+	types.Name
+}
+/*
+func (self *AsJavaLangObject) Name(env *Environment) (name types.Name, err error) {
+	return types.Name{"java", "lang", "Object"}, nil
+}
+*/

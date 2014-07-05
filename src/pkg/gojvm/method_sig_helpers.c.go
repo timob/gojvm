@@ -21,8 +21,16 @@ func TypeOf(env *Environment, v interface{}) (k types.Typed, err error) {
 	case types.Typed:
 		return vt, nil
 	case *Object:
-		return types.Class{types.JavaLangObject}, nil
+		name, err2 := vt.Name(env)
+		if err2 != nil {
+			err = err2
+			return
+		}		
+		return types.Class{name}, nil
+	case *CastObject:
+		return types.Class{vt.Name}, nil
 	}
+
 	k, err = reflectedType(env, v)
 	return
 }

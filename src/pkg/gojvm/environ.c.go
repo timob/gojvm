@@ -8,6 +8,7 @@ import (
 	"errors"
 	"gojvm/types"
 	"unsafe"
+	"log"
 )
 
 const (
@@ -273,6 +274,7 @@ func (self *Environment) _objMethod(obj *Object, name string, jt types.Typed, pa
 	cform := C.CString(form)
 	defer C.free(unsafe.Pointer(cform))
 
+	log.Printf("_objMethod %V %V",  name, form)
 	m := C.envGetMethodID(self.env, class.class, cmethod, cform)
 	if m == nil {
 		err = self.ExceptionOccurred()
@@ -294,6 +296,7 @@ func (self *Environment) _classMethod(class *Class, name string, jt types.Typed,
 	defer C.free(unsafe.Pointer(cform))
 	//cname, err := class.Name()
 	//if err != nil { return }
+	log.Printf("_classMethod %V %V", name, form)
 	m := C.envGetMethodID(self.env, class.class, cmethod, cform)
 	if m == nil {
 		err = self.ExceptionOccurred()
