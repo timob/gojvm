@@ -1,7 +1,7 @@
 package gojvm
 
 //#cgo CFLAGS:-I../include/
-//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server -Xlinker "-rpath=/usr/lib/jvm/default-java/jre/lib/amd64/server"
+//#cgo LDFLAGS:-ljvm	-L/usr/lib/jvm/default-java/jre/lib/amd64/server
 //#include "helpers.h"
 import "C"
 import (
@@ -274,7 +274,9 @@ func (self *Environment) _objMethod(obj *Object, name string, jt types.Typed, pa
 	cform := C.CString(form)
 	defer C.free(unsafe.Pointer(cform))
 
-	log.Printf("_objMethod %V %V",  name, form)
+	if debug {
+		log.Printf("_objMethod %V %V",  name, form)
+	}
 	m := C.envGetMethodID(self.env, class.class, cmethod, cform)
 	if m == nil {
 		err = self.ExceptionOccurred()
@@ -296,7 +298,9 @@ func (self *Environment) _classMethod(class *Class, name string, jt types.Typed,
 	defer C.free(unsafe.Pointer(cform))
 	//cname, err := class.Name()
 	//if err != nil { return }
-	log.Printf("_classMethod %V %V", name, form)
+	if debug {
+		log.Printf("_classMethod %V %V", name, form)
+	}
 	m := C.envGetMethodID(self.env, class.class, cmethod, cform)
 	if m == nil {
 		err = self.ExceptionOccurred()
@@ -681,3 +685,14 @@ func (self *Environment) ToString(strobj *Object) (str string, isNull bool, err 
 	}
 	return
 }
+
+func (self *Environment) ToInt64Array(arrayObj *Object) (array []int64) {
+	alen := C.envGetArrayLength(self.env, arrayObj.object)
+	_false := C.jboolean(C.JNI_FALSE)
+	ptr := C.envGetLongArrayElements(self.env, arrayObj.object, &_false)
+	defer C.envReleaseLongArrayElements(self.env, arrayObj.object, ptr, 0)
+	bytes := C.GoBytes(unsafe.Pointer(ptr), C.int(alen) * 4)
+	array = (*(*[1024*1024]int64)(unsafe.Pointer(&bytes)))[0:int(alen)]
+	return
+}
+

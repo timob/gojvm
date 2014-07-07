@@ -8,6 +8,7 @@ import (
 	"gojvm/types"
 	"strings"
 	"unsafe"
+	"runtime"
 )
 
 
@@ -45,6 +46,7 @@ func (self *JVM) AttachCurrentThread() (env *Environment, err error) {
 		err = errors.New("Couldn't attach thread (and thus cannot gather exception)")
 	} else {
 		AllEnvs.Add(env)
+		runtime.LockOSThread()
 	}
 	return
 }

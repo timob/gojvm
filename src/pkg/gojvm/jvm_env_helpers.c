@@ -64,6 +64,14 @@ void      envReleaseByteArrayElements(JNIEnv *env, jobject o, jbyte *bts, jint m
 	(*env)->ReleaseByteArrayElements(env,o, bts, mode);
 }
 
+jlong     *envGetLongArrayElements(JNIEnv *env, jobject o, jboolean *b){
+	return (*env)->GetLongArrayElements(env, o, b);
+}
+
+void      envReleaseLongArrayElements(JNIEnv *env, jobject o, jlong *native, jint mode){
+	(*env)->ReleaseLongArrayElements(env,o, native, mode);
+}
+
 
 jboolean  envIsSameObject(JNIEnv *env, jobject o, jobject o2){
 	return (*env)->IsSameObject(env,o, o2);

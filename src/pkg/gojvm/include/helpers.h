@@ -85,6 +85,8 @@ jboolean	envIsSameObject(JNIEnv *, jobject, jobject);
 jbyte			*envGetByteArrayElements(JNIEnv *, jobject, jboolean *);
 void			envReleaseByteArrayElements(JNIEnv *, jobject, jbyte *, jint); 
 
+jlong			*envGetLongArrayElements(JNIEnv *, jobject, jboolean *);
+void			envReleaseLongArrayElements(JNIEnv *, jobject, jlong *, jint); 
 
 jvalue getArg(ArgListPtr, int);
 
