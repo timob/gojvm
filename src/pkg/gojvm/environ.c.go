@@ -691,8 +691,18 @@ func (self *Environment) ToInt64Array(arrayObj *Object) (array []int64) {
 	_false := C.jboolean(C.JNI_FALSE)
 	ptr := C.envGetLongArrayElements(self.env, arrayObj.object, &_false)
 	defer C.envReleaseLongArrayElements(self.env, arrayObj.object, ptr, 0)
-	bytes := C.GoBytes(unsafe.Pointer(ptr), C.int(alen) * 4)
+	bytes := C.GoBytes(unsafe.Pointer(ptr), C.int(alen) * 8)
 	array = (*(*[1024*1024]int64)(unsafe.Pointer(&bytes)))[0:int(alen)]
+	return
+}
+
+func (self *Environment) ToIntArray(arrayObj *Object) (array []int) {
+	alen := C.envGetArrayLength(self.env, arrayObj.object)
+	_false := C.jboolean(C.JNI_FALSE)
+	ptr := C.envGetIntArrayElements(self.env, arrayObj.object, &_false)
+	defer C.envReleaseIntArrayElements(self.env, arrayObj.object, ptr, 0)
+	bytes := C.GoBytes(unsafe.Pointer(ptr), C.int(alen) * 4)
+	array = (*(*[1024*1024]int)(unsafe.Pointer(&bytes)))[0:int(alen)]
 	return
 }
 

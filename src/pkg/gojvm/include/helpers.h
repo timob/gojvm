@@ -88,6 +88,9 @@ void			envReleaseByteArrayElements(JNIEnv *, jobject, jbyte *, jint);
 jlong			*envGetLongArrayElements(JNIEnv *, jobject, jboolean *);
 void			envReleaseLongArrayElements(JNIEnv *, jobject, jlong *, jint); 
 
+jint			*envGetIntArrayElements(JNIEnv *, jobject, jboolean *);
+void			envReleaseIntArrayElements(JNIEnv *, jobject, jint *, jint); 
+
 jvalue getArg(ArgListPtr, int);
 
 
