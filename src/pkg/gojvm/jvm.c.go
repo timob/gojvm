@@ -41,12 +41,12 @@ func (self *JVM) addNative(env *Environment, f interface{}) (id int, csig types.
 */
 func (self *JVM) AttachCurrentThread() (env *Environment, err error) {
 	env = NewEnvironment(self)
+	runtime.LockOSThread()
 	//print ("Allocated environment for thread\t", env.Ptr(),"\n")
 	if 0 != C.vmAttachCurrentThread(self.jvm, env.Ptr(), nil) {
 		err = errors.New("Couldn't attach thread (and thus cannot gather exception)")
 	} else {
 		AllEnvs.Add(env)
-		runtime.LockOSThread()
 	}
 	return
 }
@@ -69,6 +69,8 @@ type JvmConfig struct {
 }
 
 func NewJVM(ver int, conf JvmConfig) (jvm *JVM, env *Environment, err error) {
+	runtime.LockOSThread()
+
 	args, err := defaultJVMArgs(ver)
 	if err != nil {
 		return
