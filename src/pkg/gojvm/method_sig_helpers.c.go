@@ -27,6 +27,8 @@ func TypeOf(env *Environment, v interface{}) (k types.Typed, err error) {
 			return
 		}		
 		return types.Class{name}, nil
+	case *ObjectArray:
+		return types.Array{types.Class{vt.Name}}, nil
 	case *CastObject:
 		return types.Class{vt.Name}, nil
 	}

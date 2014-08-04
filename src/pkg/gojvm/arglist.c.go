@@ -84,6 +84,29 @@ func newArgList(ctx *Environment, params ...interface{}) (alp argList, objStack 
 				objStack = append(objStack, str)
 				alp = append(alp, C.objValue(str.object))
 			}
+		case *ObjectArray:
+			var klass *Class
+			var arrayObj *Object
+
+			klass, err = ctx.GetClass(v.Name)
+			if err == nil {
+				arrayObj, err = ctx.newObjectArray(len(v.Objects), klass, nil)
+			}
+			if err == nil {
+				objStack = append(objStack, arrayObj)
+				for i, o := range v.Objects {
+					ctx.setObjectArrayElement(arrayObj, i, o)
+					if ctx.ExceptionCheck() {
+						err = ctx.ExceptionOccurred()
+					}
+					if err != nil {
+						break
+					}
+				}
+			}
+			if err == nil {
+				alp = append(alp, C.objValue(arrayObj.object))
+			}
 		case []string:
 			var klass *Class
 			var obj *Object

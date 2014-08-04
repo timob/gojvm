@@ -102,6 +102,12 @@ type CastObject struct {
 	*Object
 	types.Name
 }
+
+type ObjectArray struct {
+	Objects []*Object
+	types.Name
+}
+
 /*
 func (self *AsJavaLangObject) Name(env *Environment) (name types.Name, err error) {
 	return types.Name{"java", "lang", "Object"}, nil
