@@ -84,6 +84,10 @@ func (self *Object) CallDouble(env *Environment, static bool, mname string, para
 	return env.CallObjectDouble(self, static, mname, params...)
 }
 
+func (self *Object) CallLongArray(env *Environment, static bool, mname string, params ...interface{}) (i []int64, err error) {
+	return env.CallObjectLongArray(self, static, mname, params...)
+}
+
 // Calls the named Object-method on the object instance
 func (self *Object) CallObj(env *Environment, static bool, mname string, rval types.Typed, params ...interface{}) (vObj *Object, err error) {
 	return env.CallObjectObj(self, static, mname, rval, params...)

@@ -50,6 +50,9 @@ func (self *Environment) getObjectMethod(obj *Object, static bool, mname string,
 }
 
 func (self *Environment) getMethod(t interface{}, static bool, mname string, rType types.Typed, params ...interface{}) (jval C.jvalue, meth *Method, args argList, objList []*Object, err error) {
+	if debug {
+		log.Printf("getmethod: %s - %v", mname, t)
+	}
 	switch v := t.(type) {
 	case *Object:
 		//print("getObjMethod\t",mname, "\t",rType.TypeString(),"\n")
@@ -484,6 +487,14 @@ func (self *Environment) CallClassDouble(obj *Class, static bool, name string, p
 	return self.callDouble(obj, static, name, params...)
 }
 
+func (self *Environment) CallObjectLongArray(obj *Object, static bool, name string, params ...interface{}) (v []int64, err error) {
+	return self.callLongArray(obj, static, name, params...)
+}
+
+func (self *Environment) CallClassLongArray(obj *Class, static bool, name string, params ...interface{}) (v []int64, err error) {
+	return self.callLongArray(obj, static, name, params...)
+}
+
 func (self *Environment) CallObjectObj(obj *Object, static bool, name string, rtype types.Typed, params ...interface{}) (v *Object, err error) {
 	return self.callObj(obj, static, name, rtype, params...)
 }
@@ -664,6 +675,27 @@ func (self *Environment) callShort(z interface{}, static bool, name string, para
 	}
 	if err == nil {
 		v = int16(oval)
+	}
+	return
+}
+
+func (self *Environment) callLongArray(z interface{}, static bool, name string, params ...interface{}) (v []int64, err error) {
+	jval, meth, args, localStack, err := self.getMethod(z, static, name, types.Array{types.Basic(types.LongKind)}, params...)
+	if err != nil {
+		return
+	}
+	defer blowStack(self, localStack)
+	var oval C.jobject
+	if static {
+		oval = C.envCallStaticObjectMethodA(self.env, C.valObject(jval), meth.method, args.Ptr())
+	} else {
+		oval = C.envCallObjectMethodA(self.env, C.valObject(jval), meth.method, args.Ptr())
+	}
+	if oval == nil {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = self.ToInt64Array(newObject(oval))
 	}
 	return
 }

@@ -54,3 +54,8 @@ func (self *Class) CallObject(env *Environment, static bool, mname string, rval 
 func (self *Class) CallString(env *Environment, static bool, mname string, params ...interface{}) (str string, isnull bool, err error) {
 	return env.CallClassString(self, static, mname, params...)
 }
+
+func (self *Class) CallLongArray(env *Environment, static bool, mname string, params ...interface{}) (i []int64, err error) {
+	return env.CallClassLongArray(self, static, mname, params...)
+}
+
