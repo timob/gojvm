@@ -88,6 +88,10 @@ func (self *Object) CallLongArray(env *Environment, static bool, mname string, p
 	return env.CallObjectLongArray(self, static, mname, params...)
 }
 
+func (self *Object) CallIntArray(env *Environment, static bool, mname string, params ...interface{}) (i []int, err error) {
+	return env.CallObjectIntArray(self, static, mname, params...)
+}
+
 // Calls the named Object-method on the object instance
 func (self *Object) CallObj(env *Environment, static bool, mname string, rval types.Typed, params ...interface{}) (vObj *Object, err error) {
 	return env.CallObjectObj(self, static, mname, rval, params...)

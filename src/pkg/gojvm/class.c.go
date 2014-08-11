@@ -59,3 +59,7 @@ func (self *Class) CallLongArray(env *Environment, static bool, mname string, pa
 	return env.CallClassLongArray(self, static, mname, params...)
 }
 
+func (self *Class) CallIntArray(env *Environment, static bool, mname string, params ...interface{}) (i []int, err error) {
+	return env.CallClassIntArray(self, static, mname, params...)
+}
+

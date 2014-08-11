@@ -10,7 +10,7 @@ import (
 	"unsafe"
 )
 
-var debug = false
+var debug = true
 
 // due to the design of the JNI callback method, in order to support
 // callbacks (safely), we need to be able to map from C.JVM and C.JNIEnv

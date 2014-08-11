@@ -495,6 +495,14 @@ func (self *Environment) CallClassLongArray(obj *Class, static bool, name string
 	return self.callLongArray(obj, static, name, params...)
 }
 
+func (self *Environment) CallObjectIntArray(obj *Object, static bool, name string, params ...interface{}) (v []int, err error) {
+	return self.callIntArray(obj, static, name, params...)
+}
+
+func (self *Environment) CallClassIntArray(obj *Class, static bool, name string, params ...interface{}) (v []int, err error) {
+	return self.callIntArray(obj, static, name, params...)
+}
+
 func (self *Environment) CallObjectObj(obj *Object, static bool, name string, rtype types.Typed, params ...interface{}) (v *Object, err error) {
 	return self.callObj(obj, static, name, rtype, params...)
 }
@@ -696,6 +704,27 @@ func (self *Environment) callLongArray(z interface{}, static bool, name string, 
 	}
 	if err == nil {
 		v = self.ToInt64Array(newObject(oval))
+	}
+	return
+}
+
+func (self *Environment) callIntArray(z interface{}, static bool, name string, params ...interface{}) (v []int, err error) {
+	jval, meth, args, localStack, err := self.getMethod(z, static, name, types.Array{types.Basic(types.IntKind)}, params...)
+	if err != nil {
+		return
+	}
+	defer blowStack(self, localStack)
+	var oval C.jobject
+	if static {
+		oval = C.envCallStaticObjectMethodA(self.env, C.valObject(jval), meth.method, args.Ptr())
+	} else {
+		oval = C.envCallObjectMethodA(self.env, C.valObject(jval), meth.method, args.Ptr())
+	}
+	if oval == nil {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = self.ToIntArray(newObject(oval))
 	}
 	return
 }
