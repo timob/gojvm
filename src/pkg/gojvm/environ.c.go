@@ -636,7 +636,7 @@ func (self *Environment) callObj(z interface{}, static bool, name string, rval t
 	} else {
 		oval = C.envCallObjectMethodA(self.env, C.valObject(jval), meth.method, args.Ptr())
 	}
-	if oval == nil {
+	if self.ExceptionCheck() {
 		err = self.ExceptionOccurred()
 	}
 	if err == nil {
