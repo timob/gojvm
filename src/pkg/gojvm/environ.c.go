@@ -123,6 +123,7 @@ func NewEnvironment(jvm *JVM) *Environment {
 		env:     new(C.JNIEnv),
 		classes: map[string]*Class{},
 		jvm:     jvm,
+		quietExceptions: true,
 	}
 }
 
@@ -335,11 +336,17 @@ func (self *Environment) _classStaticMethod(class *Class, name string, jt types.
 }
 
 type Exception struct {
+	env *Environment
 	ex C.jthrowable
 }
 
 func (self *Exception) Error() string {
-	return "{JavaException:<TODO>}"
+	obj := newObject(C.jobject(self.ex))
+	str, _, err := obj.CallString(self.env, false, "toString")
+	if err != nil {
+		panic(err)
+	}
+	return str
 }
 
 /*
@@ -353,7 +360,7 @@ func (self *Environment) ExceptionOccurred() (ex *Exception) {
 	if throwable != nil {
 		// TODO: We'll need to do a global reference to this
 		// if it outlasts a callback...
-		ex = &Exception{throwable}
+		ex = &Exception{self, throwable}
 		if !self.quietExceptions {
 			C.envExceptionDescribe(self.env)
 		}
