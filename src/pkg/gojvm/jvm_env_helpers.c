@@ -73,11 +73,11 @@ void      envReleaseLongArrayElements(JNIEnv *env, jobject o, jlong *native, jin
 }
 
 jint     *envGetIntArrayElements(JNIEnv *env, jobject o, jboolean *b){
-	return (*env)->GetLongArrayElements(env, o, b);
+	return (*env)->GetIntArrayElements(env, o, b);
 }
 
 void      envReleaseIntArrayElements(JNIEnv *env, jobject o, jint *native, jint mode){
-	(*env)->ReleaseLongArrayElements(env,o, native, mode);
+	(*env)->ReleaseIntArrayElements(env,o, native, mode);
 }
 
 
@@ -211,7 +211,7 @@ void *doReturn(JNIEnv *env, struct goCallback_return ret){
 	ArgListPtr al = NULL;\
 	al = newArgList(nargs);\
 	if (al == NULL) { return NULL; }\
-	va_list vl; va_start(vl,nargs);\
+	va_list vl; va_start(vl,obj);\
 	for (i=0; i < nargs; i ++){ al->values[i]=va_arg(vl, jvalue); }\
 	va_end(vl);\
 	rval = goCallback((uintptr)env, (uintptr)obj, N, nargs, (uintptr)al);\
