@@ -774,3 +774,227 @@ func (self *Environment) ToIntArray(arrayObj *Object) (array []int) {
 	return
 }
 
+func (self *Environment) ToObjectArray(arrayObj *Object) []*Object {
+	jlen := C.envGetArrayLength(self.env, arrayObj.object)
+	glen := int(jlen)
+	objs := make([]*Object, glen)
+	for i := 0; i < glen; i++ {
+		objs[i] = &Object{C.envGetObjectArrayElement(self.env, arrayObj.object, C.jsize(i))}
+	}	
+	return objs
+}
+
+//fields
+func (self *Environment) GetClassObjField(obj *Class, static bool, name string, rval types.Typed) (*Object, error) {
+	return self.getObjField(obj, static, name, rval)
+}
+
+func (self *Environment) GetClassBooleanField(obj *Class, static bool, name string) (v bool, err error) {
+	return self.getBoolField(obj, static, name)
+}
+
+func (self *Environment) GetClassShortField(obj *Class, static bool, name string) (v int16, err error) {
+	return self.getShortField(obj, static, name)
+}
+
+func (self *Environment) GetClassIntField(obj *Class, static bool, name string) (v int, err error) {
+	return self.getIntField(obj, static, name)
+}
+
+func (self *Environment) GetClassLongField(obj *Class, static bool, name string) (v int64, err error) {
+	return self.getLongField(obj, static, name)
+}
+
+func (self *Environment) GetClassFloatField(obj *Class, static bool, name string) (v float32, err error) {
+	return self.getFloatField(obj, static, name)
+}
+
+func (self *Environment) GetClassDoubleField(obj *Class, static bool, name string) (v float64, err error) {
+	return self.getDobuleField(obj, static, name)
+}
+
+type Field struct {
+	field C.jfieldID
+}
+
+func (self *Environment) getClassField(c *Class, static bool, mname string, rType types.Typed) (meth *Field, err error) {
+	cmethod := C.CString(mname)
+	defer C.free(unsafe.Pointer(cmethod))
+	cform := C.CString(rType.TypeString())
+	defer C.free(unsafe.Pointer(cform))
+
+	var m C.jfieldID 
+	if !static {
+		//todo
+	} else {
+		m = C.envGetStaticFieldID(self.env, c.class, cmethod, cform)
+	}
+	if m == nil {
+		err = self.ExceptionOccurred()
+		return nil, err
+	} 
+
+	return &Field{m}, nil
+}
+
+func (self *Environment) getField(t interface{}, static bool, mname string, rType types.Typed) (jval C.jvalue, field *Field, err error) {
+	if debug {
+		log.Printf("getfield: %s - %v", mname, t)
+	}
+	switch v := t.(type) {
+/*
+	case *Object:
+		//print("getObjMethod\t",mname, "\t",rType.TypeString(),"\n")
+		jval = C.objValue(v.object)
+		meth, args, objList, err = self.getObjectMethod(v, static, mname, rType, params...)
+*/
+	case *Class:
+		jval = C.objValue(v.class)
+		field, err = self.getClassField(v, static, mname, rType)
+	default:
+		panic("getMethod called on unknown type")
+	}
+	
+	return
+}
+
+func (self *Environment) getObjField(z interface{}, static bool, name string, rval types.Typed) (v *Object, err error) {
+	jval, field, err := self.getField(z, static, name, rval)
+	if err != nil {
+		return
+	}
+	var oval C.jobject
+	if static {
+		oval = C.envGetStaticObjectField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = &Object{oval}
+	}
+	return
+}
+
+func (self *Environment) getBoolField(z interface{}, static bool, name string) (v bool, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.BoolKind))
+	if err != nil {
+		return
+	}
+	var oval C.jboolean
+	if static {
+		oval = C.envGetStaticBooleanField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = asBool(oval)
+	}
+	return
+}
+
+func (self *Environment) getShortField(z interface{}, static bool, name string) (v int16, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.ShortKind))
+	if err != nil {
+		return
+	}
+	var oval C.jshort
+	if static {
+		oval = C.envGetStaticShortField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = int16(oval)
+	}
+	return
+}
+
+func (self *Environment) getIntField(z interface{}, static bool, name string) (v int, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+	if err != nil {
+		return
+	}
+	var oval C.jint
+	if static {
+		oval = C.envGetStaticIntField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = int(oval)
+	}
+	return
+}
+
+func (self *Environment) getLongField(z interface{}, static bool, name string) (v int64, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+	if err != nil {
+		return
+	}
+	var oval C.jlong
+	if static {
+		oval = C.envGetStaticLongField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = int64(oval)
+	}
+	return
+}
+
+func (self *Environment) getFloatField(z interface{}, static bool, name string) (v float32, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+	if err != nil {
+		return
+	}
+	var oval C.jfloat
+	if static {
+		oval = C.envGetStaticFloatField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = float32(oval)
+	}
+	return
+}
+
+func (self *Environment) getDobuleField(z interface{}, static bool, name string) (v float64, err error) {
+	jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+	if err != nil {
+		return
+	}
+	var oval C.jdouble
+	if static {
+		oval = C.envGetStaticDoubleField(self.env, C.valObject(jval), field.field);
+	} else {
+		// todo
+	}
+	if self.ExceptionCheck() {
+		err = self.ExceptionOccurred()
+	}
+	if err == nil {
+		v = float64(oval)
+	}
+	return
+}
+

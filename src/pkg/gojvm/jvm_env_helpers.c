@@ -109,6 +109,9 @@ void envSetObjectArrayElement(JNIEnv *env, jobjectArray array, jsize index, jobj
 	(*env)->SetObjectArrayElement(env, array, index, val);
 }
 
+jobject envGetObjectArrayElement(JNIEnv *env, jobjectArray array, jsize index) {
+	return (*env)->GetObjectArrayElement(env, array, index);
+}
 
 jstring   envNewStringUTF(JNIEnv *env, const char *s){
 	return (*env)->NewStringUTF(env, s);
@@ -128,6 +131,43 @@ void      envReleaseStringUTFChars(JNIEnv *env, jstring s, const char *jb){
 
 void        envSetByteArrayRegion(JNIEnv *env, jbyteArray array, jsize start, jsize len, const void *buf){
 	(*env)->SetByteArrayRegion(env, array, start, len, buf);
+}
+
+//fields
+jfieldID envGetStaticFieldID(JNIEnv *env, jclass clazz, const char *name, const char *sig) {
+	return (*env)->GetStaticFieldID(env, clazz, name, sig);
+}
+
+jobject envGetStaticObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticObjectField(env, clazz, fieldID);
+}
+
+jboolean envGetStaticBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticBooleanField(env, clazz, fieldID);
+}
+
+jbyte envGetStaticByteField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticByteField(env, clazz, fieldID);
+}
+
+jshort envGetStaticShortField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticShortField(env, clazz, fieldID);
+}
+
+jint envGetStaticIntField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticIntField(env, clazz, fieldID);
+}
+
+jlong envGetStaticLongField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticLongField(env, clazz, fieldID);
+}
+
+jfloat envGetStaticFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticFloatField(env, clazz, fieldID);
+}
+
+jdouble envGetStaticDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetStaticDoubleField(env, clazz, fieldID);
 }
 
 /*
