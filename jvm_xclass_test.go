@@ -3,7 +3,7 @@ package gojvm
 /* Tests various external classes pre-disposed to have certain.. 'issues'
  */
 import (
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	"testing"
 )
 

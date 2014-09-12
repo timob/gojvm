@@ -4,7 +4,7 @@ package gojvm
 import "C"
 import (
 	"errors"
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	"reflect"
 	"sync"
 	"unsafe"

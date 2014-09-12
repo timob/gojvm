@@ -4,7 +4,7 @@ package gojvm
 //#include "helpers.h"
 import "C"
 import (
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	//	"log"
 )
 

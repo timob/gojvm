@@ -1,7 +1,7 @@
 package gojvm
 
 import (
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	//	"reflect"
 	//	"log"
 )

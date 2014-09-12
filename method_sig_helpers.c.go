@@ -7,7 +7,7 @@ import "C"
 import (
 	"errors"
 	"fmt"
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	"reflect"
 )
 

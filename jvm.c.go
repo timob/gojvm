@@ -5,7 +5,7 @@ import "C"
 
 import (
 	"errors"
-	"gojvm/types"
+	"github.com/timob/gojvm/types"
 	"strings"
 	"unsafe"
 	"runtime"
