@@ -737,6 +737,10 @@ func (self *Environment) callIntArray(z interface{}, static bool, name string, p
 }
 
 func (self *Environment) ToString(strobj *Object) (str string, isNull bool, err error) {
+	if strobj.object == nil {
+		isNull = true
+		return
+	}
 	var bytesObj *Object
 	bytesObj, err = self.CallObjectObj(strobj, false, "getBytes", types.Array{types.Basic(types.ByteKind)}, self.utf8())
 	if err == nil && bytesObj == nil {
