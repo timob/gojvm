@@ -170,6 +170,46 @@ jdouble envGetStaticDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
 	return (*env)->GetStaticDoubleField(env, clazz, fieldID);
 }
 
+
+//field
+
+jfieldID envGetFieldID(JNIEnv *env, jclass clazz, const char *name, const char *sig) {
+	return (*env)->GetFieldID(env, clazz, name, sig);
+}
+
+jobject envGetObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetObjectField(env, clazz, fieldID);
+}
+
+jboolean envGetBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetBooleanField(env, clazz, fieldID);
+}
+
+jbyte envGetByteField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetByteField(env, clazz, fieldID);
+}
+
+jshort envGetShortField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetShortField(env, clazz, fieldID);
+}
+
+jint envGetIntField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetIntField(env, clazz, fieldID);
+}
+
+jlong envGetLongField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetLongField(env, clazz, fieldID);
+}
+
+jfloat envGetFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetFloatField(env, clazz, fieldID);
+}
+
+jdouble envGetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
+	return (*env)->GetDoubleField(env, clazz, fieldID);
+}
+
+
 /*
 
 typedef struct {

@@ -108,6 +108,19 @@ jfloat envGetStaticFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID);
 jdouble envGetStaticDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID);
 
 
+jfieldID envGetFieldID(JNIEnv *env, jclass clazz, const char *name, const char *sig);
+
+jobject envGetObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jboolean envGetBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jbyte envGetByteField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jchar envGetCharField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jshort envGetShortField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jint envGetIntField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jlong envGetLongField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jfloat envGetFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+jdouble envGetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID);
+
+
 // internal helpers
 int		addStringArgument(JavaVMInitArgs *args, const char *string);
 // vm Calls

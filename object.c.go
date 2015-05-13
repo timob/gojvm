@@ -121,3 +121,35 @@ func (self *AsJavaLangObject) Name(env *Environment) (name types.Name, err error
 	return types.Name{"java", "lang", "Object"}, nil
 }
 */
+
+
+//fields
+
+func (self *Object) GetObjField(env *Environment, static bool, name string, rval types.Typed) (*Object, error) {
+    return env.GetObjectObjField(self, static, name, rval)
+}
+
+func (self *Object) GetBooleanField(env *Environment, static bool, name string) (bool, error) {
+    return env.GetObjectBooleanField(self, static, name)
+}
+
+func (self *Object) GetShortField(env *Environment, static bool, name string) (int16, error) {
+    return env.GetObjectShortField(self, static, name)
+}
+
+func (self *Object) GetIntField(env *Environment, static bool, name string) (int, error) {
+    return env.GetObjectIntField(self, static, name)
+}
+
+func (self *Object) GetLongField(env *Environment, static bool, name string) (int64, error) {
+    return env.GetObjectLongField(self, static, name)
+}
+
+func (self *Object) GetFloatField(env *Environment, static bool, name string) (float32, error) {
+    return env.GetObjectFloatField(self, static, name)
+}
+
+func (self *Object) GetDoubleField(env *Environment, static bool, name string) (float64, error) {
+    return env.GetObjectDoubleField(self, static, name)
+}
+
