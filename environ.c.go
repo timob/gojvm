@@ -403,6 +403,22 @@ func (self *Environment) NewGlobalRef(o *Object) *Object {
 	return newObject(C.envNewGlobalRef(self.env, o.object))
 }
 
+func (self *Environment) RegisterNative(className string, method string, sig types.MethodSignature, fptr interface{}) error {
+    class, err := self.GetClass(types.NewName(className))
+    if err != nil {
+        return err
+    }
+    cname := C.CString(method)
+    defer C.free(unsafe.Pointer(cname))
+
+    csig := C.CString(sig.String())
+    defer C.free(unsafe.Pointer(csig))
+    C.envRegisterNative(self.env, class.class, cname, csig, fptr.(unsafe.Pointer))
+
+    return nil
+}
+
+/*
 func (self *Environment) UnregisterNatives(c *Class) (err error) {
 	if 0 != C.envUnregisterNatives(self.env, c.class) {
 		err = self.ExceptionOccurred()
@@ -429,6 +445,8 @@ func (self *Environment) RegisterNative(c *Class, name string, fptr interface{})
 	}
 	return
 }
+*/
+
 
 /* CallObject methods */
 func asBool(jb C.jboolean) bool {
@@ -779,8 +797,13 @@ func (self *Environment) ToIntArray(arrayObj *Object) (array []int) {
 }
 
 func (self *Environment) ToObjectArray(arrayObj *Object) []*Object {
-	jlen := C.envGetArrayLength(self.env, arrayObj.object)
-	glen := int(jlen)
+    var glen int
+    if arrayObj.object == nil {
+        glen = 0
+    } else {
+        jlen := C.envGetArrayLength(self.env, arrayObj.object)
+        glen = int(jlen)
+    }
 	objs := make([]*Object, glen)
 	for i := 0; i < glen; i++ {
 		objs[i] = &Object{C.envGetObjectArrayElement(self.env, arrayObj.object, C.jsize(i))}
@@ -844,6 +867,10 @@ func (self *Environment) GetObjectFloatField(obj *Object, static bool, name stri
 
 func (self *Environment) GetObjectDoubleField(obj *Object, static bool, name string) (v float64, err error) {
     return self.getDobuleField(obj, static, name)
+}
+
+func (self *Environment) GetObjecIntArrayField(obj *Object, static bool, name string) (v []int, err error) {
+    return self.getIntArrayField(obj, static, name)
 }
 
 type Field struct {
@@ -1059,5 +1086,26 @@ func (self *Environment) getDobuleField(z interface{}, static bool, name string)
 		v = float64(oval)
 	}
 	return
+}
+
+func (self *Environment) getIntArrayField(z interface{}, static bool, name string) (v []int, err error) {
+    jval, field, err := self.getField(z, static, name, types.Array{types.Basic(types.IntKind)})
+    if err != nil {
+        return
+    }
+    var oval C.jobject
+    if static {
+        oval = C.envGetStaticObjectField(self.env, C.valObject(jval), field.field)
+    } else {
+        oval = C.envGetObjectField(self.env, C.valObject(jval), field.field)
+    }
+    if oval == nil {
+        err = self.ExceptionOccurred()
+    }
+    if err == nil {
+        v = self.ToIntArray(newObject(oval))
+    }
+
+    return
 }
 

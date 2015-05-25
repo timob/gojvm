@@ -7,10 +7,15 @@ import "C"
 import (
 	"github.com/timob/gojvm/types"
 //	"log"
+    "unsafe"
 )
 
 type Object struct {
 	object C.jobject
+}
+
+func NewObjectStruct(o unsafe.Pointer) *Object {
+    return &Object{C.jobject(o)}
 }
 
 // returns a new object value with specified parameters
@@ -153,3 +158,6 @@ func (self *Object) GetDoubleField(env *Environment, static bool, name string) (
     return env.GetObjectDoubleField(self, static, name)
 }
 
+func (self *Object) GetIntArrayField(env *Environment, static bool, name string) ([]int, error) {
+    return env.GetObjecIntArrayField(self, static, name)
+}

@@ -131,9 +131,9 @@ jint  vmAttachCurrentThread(JavaVM *jvm, void *env, void *args);
 jint 	vmDetachCurrentThread(JavaVM *jvm);
 
 
-jint	envGetJavaVM(JNIEnv	*, JavaVM **);
-jint  envRegisterNative(JNIEnv *, jclass , char *, char *, int); 
-jint  envUnregisterNatives(JNIEnv *, jclass); 
+jint  envGetJavaVM(JNIEnv	*, JavaVM **);
+jint  envRegisterNative(JNIEnv *, jclass, char *, char *, void *);
+jint  envUnregisterNatives(JNIEnv *, jclass);
 
 
 

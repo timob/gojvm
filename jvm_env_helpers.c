@@ -281,81 +281,14 @@ void *doReturn(JNIEnv *env, struct goCallback_return ret){
 	return;
 }
 
-
-
-#define GENERIC(N)	void *generified##N(JNIEnv *env, jobject obj, ...){\
- 	int i;\
-	struct goCallback_return rval;\
-	int nargs = goCallbackNArgs((uintptr)env, (uintptr)obj, N);\
-	if (nargs < 0) { return NULL; }\
-	ArgListPtr al = NULL;\
-	al = newArgList(nargs);\
-	if (al == NULL) { return NULL; }\
-	va_list vl; va_start(vl,obj);\
-	for (i=0; i < nargs; i ++){ al->values[i]=va_arg(vl, jvalue); }\
-	va_end(vl);\
-	rval = goCallback((uintptr)env, (uintptr)obj, N, nargs, (uintptr)al);\
-	delArgList(al);\
-	return doReturn(env, rval);\
-}
-
-GENERIC(0)
-GENERIC(1)
-GENERIC(2)
-GENERIC(3)
-GENERIC(4)
-GENERIC(5)
-GENERIC(6)
-GENERIC(7)
-GENERIC(8)
-GENERIC(9)
-GENERIC(10)
-GENERIC(11)
-GENERIC(12)
-GENERIC(13)
-GENERIC(14)
-GENERIC(15)
-GENERIC(16)
-GENERIC(17)
-GENERIC(18)
-GENERIC(19)
-
-
-#define GENERIFIED(N)	generified##N
-
-jint	envRegisterNative(JNIEnv *env, jclass	klass, char *funcName, char *signature, int regid ){
-	jint ret = 0;
+jint envRegisterNative(JNIEnv *env, jclass	klass, char *funcName, char *signature, void* fnPtr ){
 	JNINativeMethod native;
 
 	native.name = funcName;
 	native.signature = signature;
-	switch (regid) {
-		case 0: native.fnPtr	= GENERIFIED(0); break;
-		case 1: native.fnPtr	= GENERIFIED(1); break;
-		case 2: native.fnPtr	= GENERIFIED(2); break;
-		case 3: native.fnPtr	= GENERIFIED(3); break;
-		case 4: native.fnPtr	= GENERIFIED(4); break;
-		case 5: native.fnPtr	= GENERIFIED(5); break;
-		case 6: native.fnPtr	= GENERIFIED(6); break;
-		case 7: native.fnPtr	= GENERIFIED(7); break;
-		case 8: native.fnPtr	= GENERIFIED(8); break;
-		case 9: native.fnPtr	= GENERIFIED(9); break;
-		case 10: native.fnPtr	= GENERIFIED(10); break;
-		case 11: native.fnPtr	= GENERIFIED(11); break;
-		case 12: native.fnPtr	= GENERIFIED(12); break;
-		case 13: native.fnPtr	= GENERIFIED(13); break;
-		case 14: native.fnPtr	= GENERIFIED(14); break;
-		case 15: native.fnPtr	= GENERIFIED(15); break;
-		case 16: native.fnPtr	= GENERIFIED(16); break;
-		case 17: native.fnPtr	= GENERIFIED(17); break;
-		case 18: native.fnPtr	= GENERIFIED(18); break;
-		case 19: native.fnPtr	= GENERIFIED(19); break;
-		default:	
-			printf("Callbacks exceeded, I need to throw up an exception..\n");
-	}
+    native.fnPtr = fnPtr;
 	return (*env)->RegisterNatives(env, klass, &native, 1);
 }
-
 
 jint	envUnregisterNatives(JNIEnv  *env, jclass klass){
 	return (*env)->UnregisterNatives(env, klass);
