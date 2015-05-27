@@ -58,8 +58,6 @@ func (self *JVM) AttachCurrentThread() (env *Environment, err error) {
 func (self *JVM) DetachCurrentThread() (err error) {
 	if 0 != C.vmDetachCurrentThread(self.jvm) {
 		err = errors.New("Couldn't attach thread (and thus cannot gather exception)")
-	} else {
-		print("TODO: DetachCurrentThread - don't know which thread I am :-( (cant be unmapped)\n")
 	}
 	return
 }
