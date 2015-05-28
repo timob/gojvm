@@ -1109,3 +1109,120 @@ func (self *Environment) getIntArrayField(z interface{}, static bool, name strin
     return
 }
 
+/* ==== */
+
+func (self *Environment) setObjField(z interface{}, static bool, name string, rval types.Typed, val *Object) (err error) {
+    jval, field, err := self.getField(z, static, name, rval)
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticObjectField(self.env, C.valObject(jval), field.field, val.object);
+    } else {
+        C.envSetObjectField(self.env, C.valObject(jval), field.field, val.object);
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setBoolField(z interface{}, static bool, name string, gval bool) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.BoolKind))
+    if err != nil {
+        return
+    }
+    val := C.jboolean(C.JNI_FALSE)
+    if gval {
+        val = C.JNI_TRUE
+    }
+    if static {
+        C.envSetStaticBooleanField(self.env, C.valObject(jval), field.field, val);
+    } else {
+        C.envSetBooleanField(self.env, C.valObject(jval), field.field, val);
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setShortField(z interface{}, static bool, name string, val int16) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.ShortKind))
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticShortField(self.env, C.valObject(jval), field.field, C.jshort(val));
+    } else {
+        C.envSetShortField(self.env, C.valObject(jval), field.field, C.jshort(val));
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setIntField(z interface{}, static bool, name string, val int) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticIntField(self.env, C.valObject(jval), field.field, C.jint(val));
+    } else {
+        C.envSetIntField(self.env, C.valObject(jval), field.field, C.jint(val));
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setLongField(z interface{}, static bool, name string, val int64) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticLongField(self.env, C.valObject(jval), field.field, C.jlong(val));
+    } else {
+        C.envSetLongField(self.env, C.valObject(jval), field.field, C.jlong(val));
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setFloatField(z interface{}, static bool, name string, val float32) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticFloatField(self.env, C.valObject(jval), field.field, C.jfloat(val));
+    } else {
+        C.envSetFloatField(self.env, C.valObject(jval), field.field, C.jfloat(val));
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}
+
+func (self *Environment) setDoubleField(z interface{}, static bool, name string, val float64) (err error) {
+    jval, field, err := self.getField(z, static, name, types.Basic(types.IntKind))
+    if err != nil {
+        return
+    }
+    if static {
+        C.envSetStaticDoubleField(self.env, C.valObject(jval), field.field, C.jdouble(val));
+    } else {
+        C.envSetDoubleField(self.env, C.valObject(jval), field.field, C.jdouble(val));
+    }
+    if self.ExceptionCheck() {
+        err = self.ExceptionOccurred()
+    }
+    return
+}

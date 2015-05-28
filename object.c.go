@@ -161,3 +161,35 @@ func (self *Object) GetDoubleField(env *Environment, static bool, name string) (
 func (self *Object) GetIntArrayField(env *Environment, static bool, name string) ([]int, error) {
     return env.GetObjecIntArrayField(self, static, name)
 }
+
+
+// ----
+
+
+func (self *Object) SetObjField(env *Environment, static bool, name string, rval types.Typed, val *Object) (err error) {
+    return env.setObjField(self, static, name, rval, val)
+}
+
+func (self *Object) SetBooleanField(env *Environment, static bool, name string, val bool) (err error) {
+    return env.setBoolField(self, static, name, val)
+}
+
+func (self *Object) SetShortField(env *Environment, static bool, name string, val int16) (err error) {
+    return env.setShortField(self, static, name, val)
+}
+
+func (self *Object) SetIntField(env *Environment, static bool, name string, val int) (err error) {
+    return env.setIntField(self, static, name, val)
+}
+
+func (self *Object) SetLongField(env *Environment, static bool, name string, val int64) (err error) {
+    return env.setLongField(self, static, name, val)
+}
+
+func (self *Object) SetFloatField(env *Environment, static bool, name string, val float32) (err error) {
+    return env.setFloatField(self, static, name, val)
+}
+
+func (self *Object) SetDoubleField(env *Environment, static bool, name string, val float64) (err error) {
+    return env.setDoubleField(self, static, name, val)
+}

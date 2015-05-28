@@ -209,6 +209,72 @@ jdouble envGetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID) {
 	return (*env)->GetDoubleField(env, clazz, fieldID);
 }
 
+/* ---- */
+
+void envSetObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID, jobject val) {
+	return (*env)->SetObjectField(env, clazz, fieldID, val);
+}
+
+void envSetBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID, jboolean val) {
+	return (*env)->SetBooleanField(env, clazz, fieldID, val);
+}
+
+void envSetByteField(JNIEnv *env, jclass clazz, jfieldID fieldID, jbyte val) {
+	return (*env)->SetByteField(env, clazz, fieldID, val);
+}
+
+void envSetShortField(JNIEnv *env, jclass clazz, jfieldID fieldID, jshort val) {
+	return (*env)->SetShortField(env, clazz, fieldID, val);
+}
+
+void envSetIntField(JNIEnv *env, jclass clazz, jfieldID fieldID, jint val) {
+	return (*env)->SetIntField(env, clazz, fieldID, val);
+}
+
+void envSetLongField(JNIEnv *env, jclass clazz, jfieldID fieldID, jlong val) {
+	return (*env)->SetLongField(env, clazz, fieldID, val);
+}
+
+void envSetFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID, jfloat val) {
+	return (*env)->SetFloatField(env, clazz, fieldID, val);
+}
+
+void envSetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID, jdouble val) {
+	return (*env)->SetDoubleField(env, clazz, fieldID, val);
+}
+
+void envSetStaticObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID, jobject val) {
+	return (*env)->SetStaticObjectField(env, clazz, fieldID, val);
+}
+
+void envSetStaticBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID, jboolean val) {
+	return (*env)->SetStaticBooleanField(env, clazz, fieldID, val);
+}
+
+void envSetStaticByteField(JNIEnv *env, jclass clazz, jfieldID fieldID, jbyte val) {
+	return (*env)->SetStaticByteField(env, clazz, fieldID, val);
+}
+
+void envSetStaticShortField(JNIEnv *env, jclass clazz, jfieldID fieldID, jshort val) {
+	return (*env)->SetStaticShortField(env, clazz, fieldID, val);
+}
+
+void envSetStaticIntField(JNIEnv *env, jclass clazz, jfieldID fieldID, jint val) {
+	return (*env)->SetStaticIntField(env, clazz, fieldID, val);
+}
+
+void envSetStaticLongField(JNIEnv *env, jclass clazz, jfieldID fieldID, jlong val) {
+	return (*env)->SetStaticLongField(env, clazz, fieldID, val);
+}
+
+void envSetStaticFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID, jfloat val) {
+	return (*env)->SetStaticFloatField(env, clazz, fieldID, val);
+}
+
+void envSetStaticDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID, jdouble val) {
+	return (*env)->SetStaticDoubleField(env, clazz, fieldID, val);
+}
+
 
 /*
 
@@ -290,7 +356,7 @@ jint envRegisterNative(JNIEnv *env, jclass	klass, char *funcName, char *signatur
 	return (*env)->RegisterNatives(env, klass, &native, 1);
 }
 
-jint	envUnregisterNatives(JNIEnv  *env, jclass klass){
+jint envUnregisterNatives(JNIEnv  *env, jclass klass){
 	return (*env)->UnregisterNatives(env, klass);
 }
 

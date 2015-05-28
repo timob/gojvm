@@ -120,6 +120,29 @@ jlong envGetLongField(JNIEnv *env, jclass clazz, jfieldID fieldID);
 jfloat envGetFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID);
 jdouble envGetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID);
 
+void envSetStaticObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID, jobject val);
+void envSetStaticBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID,jboolean val);
+void envSetStaticByteField(JNIEnv *env, jclass clazz, jfieldID fieldID, jbyte val);
+void envSetStaticCharField(JNIEnv *env, jclass clazz, jfieldID fieldID, jchar val);
+void envSetStaticShortField(JNIEnv *env, jclass clazz, jfieldID fieldID, jshort val);
+void envSetStaticIntField(JNIEnv *env, jclass clazz, jfieldID fieldID, jint val);
+void envSetStaticLongField(JNIEnv *env, jclass clazz, jfieldID fieldID, jlong val);
+void envSetStaticFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID, jfloat val);
+void envSetStaticDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID, jdouble val);
+
+void envSetObjectField(JNIEnv *env, jclass clazz, jfieldID fieldID, jobject val);
+void envSetBooleanField(JNIEnv *env, jclass clazz, jfieldID fieldID, jboolean val);
+void envSetByteField(JNIEnv *env, jclass clazz, jfieldID fieldID, jbyte val);
+void envSetCharField(JNIEnv *env, jclass clazz, jfieldID fieldID, jchar val);
+void envSetShortField(JNIEnv *env, jclass clazz, jfieldID fieldID, jshort val);
+void envSetIntField(JNIEnv *env, jclass clazz, jfieldID fieldID, jint val);
+void envSetLongField(JNIEnv *env, jclass clazz, jfieldID fieldID, jlong val);
+void envSetFloatField(JNIEnv *env, jclass clazz, jfieldID fieldID, jfloat val);
+void envSetDoubleField(JNIEnv *env, jclass clazz, jfieldID fieldID, jdouble val);
+
+
+
+
 
 // internal helpers
 int		addStringArgument(JavaVMInitArgs *args, const char *string);
